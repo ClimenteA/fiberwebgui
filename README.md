@@ -1,10 +1,10 @@
-# FiberWebGui
+# Fiberwebgui
 
 Create cross-platform desktop apps using Fiber and GO! 
 
 This small package just starts the Fiber server and the Chrome* browser in app mode. Doing this allows you to use [Fiber](https://github.com/gofiber/fiber) go webframework to create a desktop application using html/css/js, go html templates anything you would use to create a website.
 
-FiberWebGui is an adaptation of [flaskwebgui](https://github.com/ClimenteA/flaskwebgui) python package which serves the same purpuse.
+Fiberwebgui is an adaptation of [flaskwebgui](https://github.com/ClimenteA/flaskwebgui) python package which serves the same purpuse.
 
 
 ## Install
