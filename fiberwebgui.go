@@ -52,7 +52,7 @@ func findBrowserOnWindows() string {
 	return getExistingPath(paths)
 }
 
-func GetBrowserPath() string {
+func getBrowserPath() string {
 
 	var browserPath string
 
@@ -70,7 +70,7 @@ func GetBrowserPath() string {
 
 }
 
-func GetFreePortStr() string {
+func getFreePortStr() string {
 	addr, _ := net.ResolveTCPAddr("tcp", "localhost:0")
 	l, _ := net.ListenTCP("tcp", addr)
 	defer l.Close()
@@ -79,7 +79,7 @@ func GetFreePortStr() string {
 	return portStr
 }
 
-func StartBrowser(guiWg *sync.WaitGroup, browserClosed chan bool, browserPath, port string) {
+func startBrowser(guiWg *sync.WaitGroup, browserClosed chan bool, browserPath, port string, windowSizeFlag string) {
 	tempDir, _ := os.MkdirTemp("", "fiberwebgui")
 
 	url := "http://127.0.0.1:" + port
@@ -87,12 +87,11 @@ func StartBrowser(guiWg *sync.WaitGroup, browserClosed chan bool, browserPath, p
 	userDataDir := "--user-data-dir=" + tempDir
 	newWindow := "--new-window"
 	noFirstRun := "--no-first-run"
-	startMaximized := "--start-maximized"
 	appUrl := "--app=" + url
 
-	log.Println("Browser started with: ", browserExecPath, userDataDir, newWindow, noFirstRun, startMaximized, appUrl)
+	log.Println("Browser started with: ", browserExecPath, userDataDir, newWindow, noFirstRun, windowSizeFlag, appUrl)
 
-	cmd := exec.Command(browserExecPath, userDataDir, newWindow, noFirstRun, startMaximized, appUrl)
+	cmd := exec.Command(browserExecPath, userDataDir, newWindow, noFirstRun, windowSizeFlag, appUrl)
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)
@@ -105,7 +104,7 @@ func StartBrowser(guiWg *sync.WaitGroup, browserClosed chan bool, browserPath, p
 
 }
 
-func StartFiberServer(guiWg *sync.WaitGroup, browserClosed chan bool, app FiberApp, port string) {
+func startFiberServer(guiWg *sync.WaitGroup, browserClosed chan bool, app FiberApp, port string) {
 	log.Println("Server started...")
 
 	go func() {
@@ -120,16 +119,22 @@ func StartFiberServer(guiWg *sync.WaitGroup, browserClosed chan bool, app FiberA
 
 }
 
-func RunFiberWebGui(app FiberApp) {
-
-	browserPath := GetBrowserPath()
-	port := GetFreePortStr()
+func run(app FiberApp, windowSizeFlag string) {
+	browserPath := getBrowserPath()
+	port := getFreePortStr()
 
 	browserClosed := make(chan bool)
 	var guiWg sync.WaitGroup
 	guiWg.Add(2)
-	go StartBrowser(&guiWg, browserClosed, browserPath, port)
-	go StartFiberServer(&guiWg, browserClosed, app, port)
+	go startBrowser(&guiWg, browserClosed, browserPath, port, windowSizeFlag)
+	go startFiberServer(&guiWg, browserClosed, app, port)
 	guiWg.Wait()
+}
 
+func Run(app FiberApp) {
+	run(app, "--start-maximized")
+}
+
+func RunWithSize(app FiberApp, width, height int) {
+	run(app, "--window-size"+strconv.Itoa(width)+","+strconv.Itoa(height))
 }
