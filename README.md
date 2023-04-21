@@ -57,7 +57,7 @@ Mac 64bit:
 GOOS=darwin GOARCH=amd64 go build -o dist/myapp main.go
 ```
 
-Of course, modify these commands as needed for your specific hardware arhitehture.
+Of course, modify these commands as needed for your specific hardware architecture.
 
 ## Observations
 
@@ -66,6 +66,7 @@ Of course, modify these commands as needed for your specific hardware arhitehtur
 - Remember the GUI is still a browser - pressing F5 will refresh the page + other browser specific things (you can hack it with js though);
 - You don't need production level setup - you just have one user to serve;
 - If you want to debug/reload features - just run it as you would normally do fiberwebgui does not provide auto-reload;
+
 
 ## Why Fiber and not net/http or Gin or X framework? 
 Comming from a Python/JS background I found Fiber the most well documented and easy to use webframework for GO. If you need this to work with other go frameworks you can take a look at the source code and adapt it as needed (nothing to fancy there).
