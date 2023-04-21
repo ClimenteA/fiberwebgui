@@ -25,8 +25,7 @@ func main() {
 		return c.SendString("Hello, World 👋!")
 	})
 
-    // Instead of app.Listen(":3000") do:
-	fiberwebgui.RunFiberWebGui(*app)
+	fiberwebgui.RunFiberWebGui(app)
 }
 
 ```
