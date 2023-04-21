@@ -133,16 +133,3 @@ func RunFiberWebGui(app FiberApp) {
 	guiWg.Wait()
 
 }
-
-// func main() {
-
-// 	app := fiber.New()
-
-// 	app.Get("/", func(c *fiber.Ctx) error {
-// 		return c.SendString("Hello, World 👋!")
-// 	})
-
-// 	RunFiberWebGui(*app)
-// 	// app.Listen(":3000")
-
-// }
