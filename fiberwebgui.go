@@ -136,5 +136,5 @@ func Run(app FiberApp) {
 }
 
 func RunWithSize(app FiberApp, width, height int) {
-	run(app, "--window-size"+strconv.Itoa(width)+","+strconv.Itoa(height))
+	run(app, "--window-size="+strconv.Itoa(width)+","+strconv.Itoa(height))
 }
