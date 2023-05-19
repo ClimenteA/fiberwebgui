@@ -70,13 +70,12 @@ func getBrowserPath() string {
 
 }
 
-func getFreePortStr() string {
+func getFreePort() int {
 	addr, _ := net.ResolveTCPAddr("tcp", "localhost:0")
 	l, _ := net.ListenTCP("tcp", addr)
 	defer l.Close()
 	port := l.Addr().(*net.TCPAddr).Port
-	portStr := strconv.Itoa(port)
-	return portStr
+	return port
 }
 
 func startBrowser(guiWg *sync.WaitGroup, browserClosed chan bool, browserPath, port string, windowSizeFlag string) {
@@ -119,22 +118,33 @@ func startFiberServer(guiWg *sync.WaitGroup, browserClosed chan bool, app FiberA
 
 }
 
-func run(app FiberApp, windowSizeFlag string) {
+func run(app FiberApp, windowSizeFlag string, port int) {
 	browserPath := getBrowserPath()
-	port := getFreePortStr()
-
+	portstr := strconv.Itoa(port)
 	browserClosed := make(chan bool)
 	var guiWg sync.WaitGroup
 	guiWg.Add(2)
-	go startBrowser(&guiWg, browserClosed, browserPath, port, windowSizeFlag)
-	go startFiberServer(&guiWg, browserClosed, app, port)
+	go startBrowser(&guiWg, browserClosed, browserPath, portstr, windowSizeFlag)
+	go startFiberServer(&guiWg, browserClosed, app, portstr)
 	guiWg.Wait()
 }
 
 func Run(app FiberApp) {
-	run(app, "--start-maximized")
+	port := getFreePort()
+	run(app, "--start-maximized", port)
+}
+
+func RunOnPort(app FiberApp, port int) {
+	run(app, "--start-maximized", port)
 }
 
 func RunWithSize(app FiberApp, width, height int) {
-	run(app, "--window-size="+strconv.Itoa(width)+","+strconv.Itoa(height))
+	port := getFreePort()
+	windowSize := "--window-size=" + strconv.Itoa(width) + "," + strconv.Itoa(height)
+	run(app, windowSize, port)
+}
+
+func RunWithSizeOnPort(app FiberApp, width, height, port int) {
+	windowSize := "--window-size=" + strconv.Itoa(width) + "," + strconv.Itoa(height)
+	run(app, windowSize, port)
 }
