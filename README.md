@@ -36,6 +36,8 @@ func main() {
 	// fiberwebgui.RunOnPort(app, 5656)
 	// fiberwebgui.RunWithSize(app, 800, 600)
 	// fiberwebgui.RunWithSizeOnPort(app, 800, 600, 5656)
+	// fiberwebgui.RunBrowser(app, 5656)
+	// fiberwebgui.RunBrowserOnPort(app, 5656)
 }
 
 ```
