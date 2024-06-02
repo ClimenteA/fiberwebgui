@@ -26,9 +26,12 @@ func getExistingPath(paths []string) string {
 func findBrowserOnLinux() string {
 	paths := []string{
 		"/usr/bin/google-chrome",
+		"/usr/bin/chromium",
 		"/usr/bin/microsoft-edge-stable",
 		"/usr/bin/microsoft-edge",
 		"/usr/bin/brave-browser",
+		"/usr/bin/brave",
+		"/usr/bin/firefox",
 	}
 	return getExistingPath(paths)
 }
